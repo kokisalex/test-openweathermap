@@ -19,13 +19,13 @@ export default class extends React.Component {
         }
         const progress = p + 10;
         this.setState({progress});
-        startProgress(i, progress);
+        if (!this.props.hidden) {
+          startProgress(i, progress);
+        }
       }, i);
     };
-    startProgress(500, progress);
-  }
 
-  componentWillReceiveProps(nextProps) {
+    startProgress(500, progress);
   }
 
   render() {
