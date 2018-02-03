@@ -1,19 +1,5 @@
 import React, {Fragment} from 'react';
 import './Main.css';
-import {curry} from 'ramda';
-
-export const cityMap = curry((item) => (
-  <tr key={item.id}>
-    <td>{item.name}, {item.sys.country}</td>
-    <td>{item.main.temp}</td>
-    <td>
-      <img className=" align-self-center mr-3"
-        src={'http://openweathermap.org/img/w/' + item.weather[0].icon + '.png'}
-        alt="..."/>
-      {item.weather[0].description}
-    </td>
-  </tr>)
-);
 
 export default function Main(props) {
   const {
@@ -54,7 +40,7 @@ export default function Main(props) {
               </thead>
               <tbody>
                 {
-                  city.map(cityMap)
+                  city
                 }
               </tbody>
             </table>

@@ -18,6 +18,19 @@ export const addCity = wrap((action, cityName) => {
   action(city);
 });
 
+export const cityMap = curry((item) => (
+  <tr key={item.id}>
+    <td>{item.name}, {item.sys.country}</td>
+    <td>{item.main.temp}</td>
+    <td>
+      <img className=" align-self-center mr-3"
+        src={'http://openweathermap.org/img/w/' + item.weather[0].icon + '.png'}
+        alt="..."/>
+      {item.weather[0].description}
+    </td>
+  </tr>)
+);
+
 
 export default class MainContainer extends React.Component {
   componentDidMount() {
@@ -59,13 +72,15 @@ export default class MainContainer extends React.Component {
   }
 
   render() {
+    const parseCity = this.props.city.map(cityMap);
+
     return (
       <Loader hidden={this.props.hidden}>
         <Main weather={this.props.weather}
           inputCity={inputCity(this.props.searchCity)}
           inputValue={this.props.inputValue}
           addCity={addCity(this.props.addCity, this.props.inputValue)}
-          city={this.props.city}/>
+          city={parseCity}/>
       </Loader>
     );
   }
