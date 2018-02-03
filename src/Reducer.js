@@ -26,7 +26,7 @@ const store = createStore(
 export default function Reducer() {
   return (
     <Provider store={store}>
-        <Main/>
+      <Main/>
     </Provider>
   );
 }

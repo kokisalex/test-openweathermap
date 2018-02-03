@@ -24,12 +24,23 @@ export const setWeather = (state, {payload}) => {
 };
 
 export const addCity = (state, {payload}) => {
+  const {
+    list
+  } = payload;
+
+  if (!list.length) {
+    return {
+      ...state,
+      inputValue: '',
+    };
+  }
+
   return {
     ...state,
     inputValue: '',
     city: [
       ...state.city,
-      payload.list[0],
+      list[0],
     ]
   };
 };

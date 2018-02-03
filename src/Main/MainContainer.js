@@ -62,10 +62,10 @@ export default class MainContainer extends React.Component {
     return (
       <Loader hidden={this.props.hidden}>
         <Main weather={this.props.weather}
-              inputCity={inputCity(this.props.searchCity)}
-              inputValue={this.props.inputValue}
-              addCity={addCity(this.props.addCity, this.props.inputValue)}
-              city={this.props.city}/>
+          inputCity={inputCity(this.props.searchCity)}
+          inputValue={this.props.inputValue}
+          addCity={addCity(this.props.addCity, this.props.inputValue)}
+          city={this.props.city}/>
       </Loader>
     );
   }
