@@ -27,6 +27,21 @@ it('LoaderContainer: start progress call setTimeout', () => {
   expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 500);
 });
 
+it('LoaderContainer: start progress call setState', () => {
+  const i = 500;
+  const p = 0;
+  const h = true;
+  const setState = jest.fn();
+
+  startProgress(i, p, h, setState);
+  jest.runTimersToTime(500);
+
+  expect(setState.mock.calls.length).toBe(1);
+  const firstCall = setState.mock.calls[0];
+  const firstCallArg = firstCall[0];
+  expect(firstCallArg).toEqual({progress: 10});
+});
+
 it('LoaderContainer: without crashing', () => {
   const component = shallow(<View/>, {});
 
@@ -41,15 +56,18 @@ it('LoaderContainer: re render component', () => {
 
 it('LoaderContainer: set progress 0', () => {
   const p = 0;
-  expect(setProgress(p)).toEqual(10);
+  const progress = setProgress(p);
+  expect(progress).toEqual(10);
 });
 
 it('LoaderContainer: set progress 20', () => {
   const p = 20;
-  expect(setProgress(p)).toEqual(30);
+  const progress = setProgress(p);
+  expect(progress).toEqual(30);
 });
 
 it('LoaderContainer: set progress 10', () => {
   const p = 100;
-  expect(setProgress(p)).toEqual(10);
+  const progress = setProgress(p);
+  expect(progress).toEqual(10);
 });

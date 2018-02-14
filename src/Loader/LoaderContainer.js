@@ -20,7 +20,7 @@ export const startProgress = (i, p, h, setState) => {
   }, i);
 };
 
-export default class extends React.PureComponent {
+export default class LoaderContainer extends React.PureComponent {
   constructor() {
     super();
     this.state = {
