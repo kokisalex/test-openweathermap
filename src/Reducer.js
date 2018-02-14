@@ -8,7 +8,7 @@ import {omit, compose} from 'ramda';
 import Main from './Main/MainConnected';
 import main from './Main/Redux/MainReducer';
 
-const slicer = () => (store) => {
+export const slicer = () => (store) => {
   return omit(['notifications'], store);
 };
 

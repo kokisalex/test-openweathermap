@@ -34,7 +34,6 @@
       "src/**/*.{js,jsx}",
       "!src/registerServiceWorker.js",
       "!src/SetupTests.js"
-
     ]
   },
   "eslintConfig": {
@@ -55,6 +54,7 @@
   },
   "devDependencies": {
     "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1"
+    "enzyme-adapter-react-16": "^1.1.1",
+    "fetch-mock": "^6.0.0"
   }
 }
