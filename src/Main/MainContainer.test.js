@@ -1,5 +1,5 @@
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import {shallow} from 'enzyme';
 import fetchMock from 'fetch-mock';
 
 import MainContainer, {
@@ -141,7 +141,6 @@ it('MainContainer: next props call setLastUpdate', () => {
 });
 
 it('MainContainer: next props not call setLastUpdate', () => {
-  const lastUpdate = '';
   const setLastUpdate = jest.fn();
   const setCoordinates = jest.fn();
   const city = [];

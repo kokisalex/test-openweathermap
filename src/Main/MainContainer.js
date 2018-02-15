@@ -32,8 +32,8 @@ export const cityMap = curry((item) => (
     <td>{item.main.temp}</td>
     <td>
       <img className=" align-self-center mr-3"
-           src={'http://openweathermap.org/img/w/' + item.weather[0].icon + '.png'}
-           alt="..."/>
+        src={'http://openweathermap.org/img/w/' + item.weather[0].icon + '.png'}
+        alt="..."/>
       {item.weather[0].description}
     </td>
   </tr>)
@@ -91,10 +91,10 @@ export default class MainContainer extends React.Component {
     return (
       <Loader hidden={this.props.hidden}>
         <Main weather={this.props.weather}
-              inputCity={inputCity(this.props.searchCity)}
-              inputValue={this.props.inputValue}
-              addCity={addCity(this.props.addCity, this.props.inputValue)}
-              city={parseCity}/>
+          inputCity={inputCity(this.props.searchCity)}
+          inputValue={this.props.inputValue}
+          addCity={addCity(this.props.addCity, this.props.inputValue)}
+          city={parseCity}/>
       </Loader>
     );
   }
