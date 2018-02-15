@@ -25,7 +25,10 @@ setNavigator();
 function setNavigator() {
   const geoLocationMock = {
     getCurrentPosition: jest.fn(),
+    watchPosition: jest.fn(),
   };
 
   global.navigator.geolocation = geoLocationMock;
 }
+
+process.env.REACT_APP_WEATHER = '';

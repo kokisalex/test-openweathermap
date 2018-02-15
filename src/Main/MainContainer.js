@@ -4,7 +4,6 @@ import Main from './Main';
 import Loader from '../Loader/LoaderContainer';
 import {curry} from 'ramda';
 
-
 const URL_WEATHER = process.env.REACT_APP_WEATHER;
 const URL_SEARCH = process.env.REACT_APP_FIND;
 
@@ -18,19 +17,31 @@ export const addCity = wrap((action, cityName) => {
   action(city);
 });
 
+export const configUrl = ({latitude, longitude}) => {
+  return `${URL_WEATHER}&lat=${latitude}&lon=${longitude}`;
+};
+
 export const cityMap = curry((item) => (
   <tr key={item.id}>
     <td>{item.name}, {item.sys.country}</td>
     <td>{item.main.temp}</td>
     <td>
       <img className=" align-self-center mr-3"
-        src={'http://openweathermap.org/img/w/' + item.weather[0].icon + '.png'}
-        alt="..."/>
+           src={'http://openweathermap.org/img/w/' + item.weather[0].icon + '.png'}
+           alt="..."/>
       {item.weather[0].description}
     </td>
   </tr>)
 );
 
+export const setLocation = curry((setCoordinates, position) => {
+  const {
+    latitude,
+    longitude,
+  } = position.coords;
+
+  setCoordinates({latitude, longitude});
+});
 
 export default class MainContainer extends React.Component {
   componentDidMount() {
@@ -38,14 +49,7 @@ export default class MainContainer extends React.Component {
       setCoordinates,
     } = this.props;
 
-    navigator.geolocation.getCurrentPosition(position => {
-      const {
-        latitude,
-        longitude,
-      } = position.coords;
-
-      setCoordinates({latitude, longitude});
-    });
+    navigator.geolocation.getCurrentPosition(setLocation(setCoordinates));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,7 +69,7 @@ export default class MainContainer extends React.Component {
     if (lastUpdate === hours || !latitude || !longitude) {
       return;
     }
-    const url = `${URL_WEATHER}&lat=${latitude}&lon=${longitude}`;
+    const url = configUrl({latitude, longitude});
     const weather = getWeather(url);
     setWeather(weather);
     setLastUpdate(hours);
@@ -77,10 +81,10 @@ export default class MainContainer extends React.Component {
     return (
       <Loader hidden={this.props.hidden}>
         <Main weather={this.props.weather}
-          inputCity={inputCity(this.props.searchCity)}
-          inputValue={this.props.inputValue}
-          addCity={addCity(this.props.addCity, this.props.inputValue)}
-          city={parseCity}/>
+              inputCity={inputCity(this.props.searchCity)}
+              inputValue={this.props.inputValue}
+              addCity={addCity(this.props.addCity, this.props.inputValue)}
+              city={parseCity}/>
       </Loader>
     );
   }
