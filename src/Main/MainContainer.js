@@ -7,6 +7,11 @@ import {curry} from 'ramda';
 const URL_WEATHER = process.env.REACT_APP_WEATHER;
 const URL_SEARCH = process.env.REACT_APP_FIND;
 
+export const getDateHours = () => {
+  const today = new Date();
+  return today.getHours();
+};
+
 export const inputCity = curry((action, {target}) => {
   action(target.value);
 });
@@ -53,22 +58,27 @@ export default class MainContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const today = new Date();
-    const hours = today.getHours();
+    const hours = getDateHours();
+
     const {
       setWeather,
-      lastUpdate,
       setLastUpdate,
     } = this.props;
 
     const {
+      lastUpdate,
+      location
+    } = nextProps;
+
+    const {
       latitude,
       longitude,
-    } = nextProps.location;
+    } = location;
 
     if (lastUpdate === hours || !latitude || !longitude) {
       return;
     }
+
     const url = configUrl({latitude, longitude});
     const weather = getWeather(url);
     setWeather(weather);

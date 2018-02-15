@@ -31,4 +31,14 @@ function setNavigator() {
   global.navigator.geolocation = geoLocationMock;
 }
 
+setDate();
+
+function setDate() {
+  const DATE_TO_USE = new Date('2018-02-02T11:11:11');
+  const _Date = Date;
+  global.Date = jest.fn(() => DATE_TO_USE);
+  global.Date.now = _Date.now;
+  global.Date.getHours = _Date.getHours;
+}
+
 process.env.REACT_APP_WEATHER = '';

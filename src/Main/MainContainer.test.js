@@ -7,6 +7,7 @@ import MainContainer, {
   addCity,
   cityMap,
   configUrl,
+  setLocation,
 } from './MainContainer';
 
 it('MainContainer: render', () => {
@@ -16,7 +17,7 @@ it('MainContainer: render', () => {
   const city = [];
   const latitude = 'loc';
   const longitude = 'loc';
-  const setWeather = jest.fn(() => Promise.resolve());
+  const setWeather = jest.fn();
   const location = {
     latitude,
     longitude,
@@ -60,11 +61,23 @@ it('MainContainer: addCity', async () => {
 });
 
 it('MainContainer: cityMap', () => {
-  const city = [];
+  const city = [{
+    id: '1',
+    name: 'name',
+    main: {
+      temp: '12'
+    },
+    sys: {
+      country: 'UA'
+    },
+    weather: [
+      'ico'
+    ]
+  }];
 
   const result = city.map(cityMap);
 
-  expect(result.length).toEqual(0);
+  expect(result.length).toEqual(1);
 });
 
 it('MainContainer: configUrl', () => {
@@ -78,31 +91,81 @@ it('MainContainer: configUrl', () => {
   expect(configUrl(location)).toEqual(expected);
 });
 
-test(`MainContainer: componentDidMount: set location`, () => {
+test('MainContainer: setLocation', () => {
+  const setCoordinates = jest.fn();
+  const position = {
+    coords: {
+      latitude: 1,
+      longitude: 1,
+    }
+  };
+  setLocation(setCoordinates, position);
+
+  const expected = {
+    latitude: 1,
+    longitude: 1,
+  };
+
+  expect(setCoordinates).toHaveBeenCalledWith(expected);
+});
+
+it('MainContainer: next props call setLastUpdate', () => {
+  const setLastUpdate = jest.fn();
+  const setCoordinates = jest.fn();
+  const city = [];
+
+  const setWeather = jest.fn();
+
+  const props = {
+    setLastUpdate,
+    setWeather,
+    city,
+    setCoordinates,
+  };
+
+  fetchMock.getOnce('&lat=loc&lon=loc', {overwriteRoutes: true});
+
+  const component = shallow(<MainContainer {...props}/>);
+
+  const nextProps = {
+    lastUpdate: 3,
+    location: {
+      latitude: 'loc',
+      longitude: 'loc',
+    }
+  };
+
+  component.setProps(nextProps);
+
+  expect(setLastUpdate).toBeCalledWith(11);
+});
+
+it('MainContainer: next props not call setLastUpdate', () => {
   const lastUpdate = '';
   const setLastUpdate = jest.fn();
   const setCoordinates = jest.fn();
   const city = [];
-  const latitude = '';
-  const longitude = '';
+
   const setWeather = jest.fn();
-  const location = {
-    latitude,
-    longitude,
-  };
 
   const props = {
     setLastUpdate,
-    lastUpdate,
     setWeather,
     city,
-    location,
     setCoordinates,
   };
 
-  mount(
-    <MainContainer {...props} />
-  );
+  const component = shallow(<MainContainer {...props}/>);
 
-  expect(setCoordinates).toHaveBeenCalledWith({l: 0, d: 3});
+  const nextProps = {
+    lastUpdate: 11,
+    location: {
+      latitude: 'loc',
+      longitude: 'loc',
+    }
+  };
+
+  component.setProps(nextProps);
+
+  expect(setLastUpdate).not.toBeCalled();
 });
